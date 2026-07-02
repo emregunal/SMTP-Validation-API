@@ -1,0 +1,6 @@
+# Local override: host port 5432 is taken on this machine, and .env expects
+# the DB on 5433. Publish the Postgres container on 5433 instead.
+services:
+  postgres:
+    ports:
+      - '5434:5432'

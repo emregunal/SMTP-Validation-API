@@ -1,0 +1,21 @@
+services:
+  postgres:
+    image: postgres:16
+    container_name: smtp_validator_postgres
+    restart: unless-stopped
+    environment:
+      POSTGRES_USER: smtp_validator
+      POSTGRES_PASSWORD: smtp_validator
+      POSTGRES_DB: smtp_validator_db
+    ports:
+      - '5432:5432'
+    volumes:
+      - smtp_validator_pgdata:/var/lib/postgresql/data
+    healthcheck:
+      test: ['CMD-SHELL', 'pg_isready -U smtp_validator -d smtp_validator_db']
+      interval: 10s
+      timeout: 5s
+      retries: 5
+
+volumes:
+  smtp_validator_pgdata:

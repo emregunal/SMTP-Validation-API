@@ -1,0 +1,77 @@
+// Prisma schema for SMTP Validator API - MVP 1
+// docs: https://pris.ly/d/prisma-schema
+
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "postgresql"
+  url      = env("DATABASE_URL")
+}
+
+/// A single validation request. One row per incoming email check.
+model ValidationRequest {
+  id              String   @id @default(uuid())
+  email           String
+  normalizedEmail String?
+  status          String
+  subStatus       String?
+  risk            String?
+  score           Int?
+  reason          String?
+  createdAt       DateTime @default(now())
+
+  result ValidationResult?
+
+  @@index([email])
+  @@index([createdAt])
+}
+
+/// Detailed result / evidence attached to a ValidationRequest.
+model ValidationResult {
+  id        String            @id @default(uuid())
+  requestId String            @unique
+  request   ValidationRequest @relation(fields: [requestId], references: [id], onDelete: Cascade)
+
+  localPart String?
+  domain    String?
+
+  syntaxValid Boolean @default(false)
+  domainValid Boolean @default(false)
+  dnsFound    Boolean @default(false)
+  mxFound     Boolean @default(false)
+  nullMx      Boolean @default(false)
+
+  disposable   Boolean @default(false)
+  roleBased    Boolean @default(false)
+  freeEmail    Boolean @default(false)
+  typoDetected Boolean @default(false)
+  didYouMean   String?
+
+  mxRecords   Json?
+  aRecords    Json?
+  aaaaRecords Json?
+
+  raw Json?
+
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+}
+
+/// Disposable / throwaway email domains. Seeded, extendable at runtime.
+model DisposableDomain {
+  id        String   @id @default(uuid())
+  domain    String   @unique
+  source    String?
+  active    Boolean  @default(true)
+  createdAt DateTime @default(now())
+}
+
+/// Role-based local-part prefixes (admin, info, support, ...).
+model RoleBasedPrefix {
+  id        String   @id @default(uuid())
+  prefix    String   @unique
+  active    Boolean  @default(true)
+  createdAt DateTime @default(now())
+}
