@@ -360,14 +360,47 @@ describe('RiskScoringService', () => {
       { roleBased: true },
       { typoSuggestedDomain: 'gmail.com' },
       {
-        smtp: { status: 'accepted', code: 250, enhancedCode: null, message: null, provider: 'unknown', providerRiskProfile: 'unknown', mxHost: null, durationMs: 10 },
+        smtp: {
+          status: 'accepted',
+          code: 250,
+          enhancedCode: null,
+          message: null,
+          provider: 'unknown',
+          providerRiskProfile: 'unknown',
+          mxHost: null,
+          durationMs: 10,
+        },
       },
       {
-        smtp: { status: 'rejected', code: 550, enhancedCode: '5.1.1', message: 'User unknown', mailboxNotFound: true, provider: 'gmail', providerRiskProfile: 'strict', mxHost: null, durationMs: 10 },
+        smtp: {
+          status: 'rejected',
+          code: 550,
+          enhancedCode: '5.1.1',
+          message: 'User unknown',
+          mailboxNotFound: true,
+          provider: 'gmail',
+          providerRiskProfile: 'strict',
+          mxHost: null,
+          durationMs: 10,
+        },
       },
       {
-        smtp: { status: 'blocked', code: 554, enhancedCode: '5.7.1', message: 'Spam', provider: 'unknown', providerRiskProfile: 'unknown', mxHost: null, durationMs: 10 },
-        catchAll: { status: 'not_detected', testAddress: 'x@example.com', smtpStatus: 'rejected', confidence: 'high' },
+        smtp: {
+          status: 'blocked',
+          code: 554,
+          enhancedCode: '5.7.1',
+          message: 'Spam',
+          provider: 'unknown',
+          providerRiskProfile: 'unknown',
+          mxHost: null,
+          durationMs: 10,
+        },
+        catchAll: {
+          status: 'not_detected',
+          testAddress: 'x@example.com',
+          smtpStatus: 'rejected',
+          confidence: 'high',
+        },
       },
     ];
     for (const partial of cases) {

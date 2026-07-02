@@ -42,7 +42,14 @@ export class RiskScoringService {
         EmailStatus.UNDELIVERABLE,
         EmailSubStatus.FAILED_SYNTAX_CHECK,
         context.syntax.reason ?? 'Email failed the syntax check.',
-        [this.sig('syntax', 'negative', -100, 'Email failed the syntax check.')],
+        [
+          this.sig(
+            'syntax',
+            'negative',
+            -100,
+            'Email failed the syntax check.',
+          ),
+        ],
       );
     }
 
